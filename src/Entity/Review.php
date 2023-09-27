@@ -4,7 +4,7 @@ namespace App\Entity;
 class Review
 {
     private int $id;
-    private ?int $grade;
+    private ?float $grade;
     private ?string $comment;
     private ?string $username;
     private ?Movie $movie;

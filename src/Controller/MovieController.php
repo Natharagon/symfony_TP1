@@ -38,9 +38,7 @@ class MovieController extends AbstractController
             $movie->setReleaseDate(new \DateTime($apiMovie['release_date']));
             $movie->setSynopsis(($apiMovie['overview']));
             $movie->setIsAdult($apiMovie['adult']);
-            $review = new Review();
-            $review->setGrade($apiMovie['vote_average']);
-            $movie->addReview($review);
+            $movie->setGrade($apiMovie['vote_average']);
             $movies[] = $movie;
         }
 
