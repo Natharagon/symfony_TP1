@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 class Movie 
 {
     # Attributes
     private int $id;
     private ?string $title;
-    private ?Collection $image;
-    private ?Collection $video;
+    private ?Collection $images;
+    private ?Collection $videos;
     private ?string $synopsis;
     private ?string $language;
     private ?bool $isAdult;
@@ -17,6 +18,15 @@ class Movie
     private ?float $grade;
     private ?Collection $themes;
     private ?Collection $reviews;
+    private ?Collection $actors;
+
+    # Functions
+    public function __construct()
+    {
+        $this->themes = new ArrayCollection();
+        $this->actors = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
+    }
 
     # Getters and setters
     /**
@@ -58,18 +68,38 @@ class Movie
     /**
      * Get the value of image
      */
-    public function getImage(): ?Collection
+    public function getImages(): ?Collection
     {
-        return $this->image;
+        return $this->images;
     }
 
     /**
      * Set the value of image
      */
-    public function setImage(?Collection $image): self
+    public function setImages(?Collection $image): self
     {
         $this->image = $image;
 
+        return $this;
+    }
+
+    public function addImage(Image $image): static
+    {
+        if (!$this->images->contains($image)){
+            $this->images->add($image);
+            $image->setMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            if ($image->getMovie() === $this) {
+                $image->setMovie(null);
+            }
+        }
         return $this;
     }
 
@@ -78,7 +108,7 @@ class Movie
      */
     public function getVideo(): ?Collection
     {
-        return $this->video;
+        return $this->videos;
     }
 
     /**
@@ -86,8 +116,28 @@ class Movie
      */
     public function setVideo(?Collection $video): self
     {
-        $this->video = $video;
+        $this->videos = $video;
 
+        return $this;
+    }
+
+    public function addVideo(Video $video): static
+    {
+        if (!$this->videos->contains($video)){
+            $this->videos->add($video);
+            $video->setMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): static
+    {
+        if ($this->videos->removeElement($video)) {
+            if ($video->getMovie() === $this) {
+                $video->setMovie(null);
+            }
+        }
         return $this;
     }
 
@@ -199,6 +249,26 @@ class Movie
         return $this;
     }
 
+    public function addTheme(Theme $theme): static
+    {
+        if (!$this->themes->contains($theme)){
+            $this->themes->add($theme);
+            $theme->addMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(Theme $theme): static
+    {
+        if ($this->themes->removeElement($theme)) {
+            if ($theme->getMovies()->contains($this)) {
+                $theme->removeMovie($this);
+            }
+        }
+        return $this;
+    }
+
     /**
      * Get the value of reviews
      */
@@ -213,6 +283,24 @@ class Movie
     public function setReviews(?Collection $reviews): self
     {
         $this->reviews = $reviews;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of actors
+     */
+    public function getActors(): ?Collection
+    {
+        return $this->actors;
+    }
+
+    /**
+     * Set the value of actors
+     */
+    public function setActors(?Collection $actors): self
+    {
+        $this->actors = $actors;
 
         return $this;
     }

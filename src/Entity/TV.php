@@ -3,11 +3,14 @@
 namespace App\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 class TV
 {
     private int $id;
     private ?string $name;
+    private ?Collection $images;
+    private ?Collection $videos;
     private ?string $language;
     private ?string $country;
     private ?int $seasons;
@@ -18,10 +21,19 @@ class TV
     private ?DateTime $startDate;
     private ?int $status;
     private ?bool $isAdult;
+    private ?Collection $themes;
     private ?Collection $reviews;
+    private ?Collection $actors;
+
+    # Functions
+    public function __construct()
+    {
+        $this->themes = new ArrayCollection();
+        $this->actors = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
+    }
 
     # Getters and setters
-    
     /**
      * Get the value of id
      */
@@ -54,6 +66,42 @@ class TV
     public function setName(?string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of images
+     */
+    public function getImages(): ?Collection
+    {
+        return $this->images;
+    }
+
+    /**
+     * Set the value of images
+     */
+    public function setImages(?Collection $images): self
+    {
+        $this->images = $images;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of videos
+     */
+    public function getVideos(): ?Collection
+    {
+        return $this->videos;
+    }
+
+    /**
+     * Set the value of videos
+     */
+    public function setVideos(?Collection $videos): self
+    {
+        $this->videos = $videos;
 
         return $this;
     }
@@ -239,6 +287,44 @@ class TV
     }
 
     /**
+     * Get the value of themes
+     */
+    public function getThemes(): ?Collection
+    {
+        return $this->themes;
+    }
+
+    /**
+     * Set the value of themes
+     */
+    public function setThemes(?Collection $themes): self
+    {
+        $this->themes = $themes;
+
+        return $this;
+    }
+
+    public function addTheme(Theme $theme): static
+    {
+        if (!$this->themes->contains($theme)){
+            $this->themes->add($theme);
+            $theme->addTv($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(Theme $theme): static
+    {
+        if ($this->themes->removeElement($theme)) {
+            if ($theme->getTv()->contains($this)) {
+                $theme->removeTv($this);
+            }
+        }
+        return $this;
+    }
+
+    /**
      * Get the value of reviews
      */
     public function getReviews(): ?Collection
@@ -252,6 +338,24 @@ class TV
     public function setReviews(?Collection $reviews): self
     {
         $this->reviews = $reviews;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of actors
+     */
+    public function getActors(): ?Collection
+    {
+        return $this->actors;
+    }
+
+    /**
+     * Set the value of actors
+     */
+    public function setActors(?Collection $actors): self
+    {
+        $this->actors = $actors;
 
         return $this;
     }

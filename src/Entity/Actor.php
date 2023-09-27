@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use Doctrine\Common\Collections\Collection;
 
 class Actor
 {
@@ -9,8 +10,10 @@ class Actor
     private ?string $firstName;
     private ?int $gender;
     private ?string $biography;
+    private ?Collection $movies;
+    private ?Collection $tv;
+    
 
-    # Getters and setters
     /**
      * Get the value of id
      */
@@ -97,6 +100,42 @@ class Actor
     public function setBiography(?string $biography): self
     {
         $this->biography = $biography;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of movies
+     */
+    public function getMovies(): ?Collection
+    {
+        return $this->movies;
+    }
+
+    /**
+     * Set the value of movies
+     */
+    public function setMovies(?Collection $movies): self
+    {
+        $this->movies = $movies;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tv
+     */
+    public function getTv(): ?Collection
+    {
+        return $this->tv;
+    }
+
+    /**
+     * Set the value of tv
+     */
+    public function setTv(?Collection $tv): self
+    {
+        $this->tv = $tv;
 
         return $this;
     }

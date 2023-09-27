@@ -9,7 +9,8 @@ class Theme
     private int $id;
     private string $name;
     private Collection $movies;
-
+    private Collection $tv;
+    
     # Getters and setters
     /**
      * Get the value of id
@@ -62,6 +63,64 @@ class Theme
     {
         $this->movies = $movies;
 
+        return $this;
+    }
+
+    public function addMovie(Movie $movie): static
+    {
+        if (!$this->movies->contains($movie)){
+            $this->movies->add($movie);
+            $movie->addTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMovie(Movie $movie): static
+    {
+        if ($this->movies->removeElement($movie)) {
+            if ($movie->getThemes()->contains($this)) {
+                $movie->removeTheme($this);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Get the value of tv
+     */
+    public function getTv(): Collection
+    {
+        return $this->tv;
+    }
+
+    /**
+     * Set the value of tv
+     */
+    public function setTv(Collection $tv): self
+    {
+        $this->tv = $tv;
+
+        return $this;
+    }
+
+    public function addTv(TV $tv): static
+    {
+        if (!$this->tv->contains($tv)){
+            $this->tv->add($tv);
+            $tv->addTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTv(TV $tv): static
+    {
+        if ($this->tv->removeElement($tv)) {
+            if ($tv->getThemes()->contains($this)) {
+                $tv->removeTheme($this);
+            }
+        }
         return $this;
     }
 }
