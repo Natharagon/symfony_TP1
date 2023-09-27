@@ -18,6 +18,14 @@ framework:
     php_errors:
         log: true
 
+    http-client:
+        scoped_clients:
+            tmdbClient:
+                base_uri: 'https://api.themoviedb.org'
+                auth_bearer: eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMzI2MmU1ZDM0M2MzYjBiOGM3NDgzYTEwMWE1NDA3OCIsInN1YiI6IjY1MGE5ZjBlNmMxOWVhMDBjYTQ2OWViYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.sju3D9a5F4dMD8f59TrwIgQD0offYGjJS95jdwdC9Zo
+                headers:
+                    Accept: 'application/json'
+
 when@test:
     framework:
         test: true

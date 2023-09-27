@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <ol>
+    {% for movie in movies %}
+        <li>{{movie.title}}</li>
+        <img src={{movie.images.0.path}} width=20% height=20%></img>
+    {% endfor %}
+    </ol>
+{% endblock %}
