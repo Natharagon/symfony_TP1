@@ -165,7 +165,6 @@ class Actor
             $this->tv->add($tv);
             $tv->addActor($this);
         }
-
         return $this;
     }
 
