@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class Theme
@@ -10,6 +11,13 @@ class Theme
     private string $name;
     private Collection $movies;
     private Collection $tv;
+
+    # Functions
+    public function __construct()
+    {
+        $this->movies = new ArrayCollection();
+        $this->tv = new ArrayCollection();
+    }
     
     # Getters and setters
     /**
@@ -72,7 +80,6 @@ class Theme
             $this->movies->add($movie);
             $movie->addTheme($this);
         }
-
         return $this;
     }
 
@@ -110,7 +117,6 @@ class Theme
             $this->tv->add($tv);
             $tv->addTheme($this);
         }
-
         return $this;
     }
 

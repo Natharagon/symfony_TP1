@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class Actor
@@ -13,6 +14,12 @@ class Actor
     private ?Collection $movies;
     private ?Collection $tv;
     
+    # Functions
+    public function __construct()
+    {
+        $this->movies = new ArrayCollection();
+        $this->tv = new ArrayCollection();
+    }
 
     /**
      * Get the value of id
@@ -128,7 +135,6 @@ class Actor
             $this->movies->add($movie);
             $movie->addActor($this);
         }
-
         return $this;
     }
 

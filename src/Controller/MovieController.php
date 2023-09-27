@@ -22,8 +22,6 @@ class MovieController extends AbstractController
             'https://api.themoviedb.org/3/movie/popular?api_key=c3262e5d343c3b0b8c7483a101a54078'
         );
 
-        $statusCode = $response->getStatusCode();
-        $contentType = $response->getHeaders()['content-type'][0];
         $content = $response->getContent();
         $content = json_decode($content);
         $content = json_encode($content->results);

@@ -9,23 +9,25 @@ class Movie
     # Attributes
     private int $id;
     private ?string $title;
-    private ?Collection $images;
-    private ?Collection $videos;
+    private Collection $images;
+    private Collection $videos;
     private ?string $synopsis;
     private ?string $language;
     private ?bool $isAdult;
     private ?DateTime $releaseDate;
     private ?float $grade;
-    private ?Collection $themes;
-    private ?Collection $reviews;
-    private ?Collection $actors;
+    private Collection $themes;
+    private Collection $reviews;
+    private Collection $actors;
 
     # Functions
     public function __construct()
     {
+        $this->images = new ArrayCollection();
+        $this->videos = new ArrayCollection();
         $this->themes = new ArrayCollection();
-        $this->actors = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->actors = new ArrayCollection();
     }
 
     # Getters and setters
@@ -284,6 +286,25 @@ class Movie
     {
         $this->reviews = $reviews;
 
+        return $this;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)){
+            $this->reviews->add($review);
+            $review->setMovie($this);
+        }
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            if ($review->getMovie()===$this) {
+                $review->setMovie(null);
+            }
+        }
         return $this;
     }
 

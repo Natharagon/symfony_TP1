@@ -9,28 +9,29 @@ class TV
 {
     private int $id;
     private ?string $name;
-    private ?Collection $images;
-    private ?Collection $videos;
+    private Collection $images;
+    private Collection $videos;
     private ?string $language;
     private ?string $country;
     private ?int $seasons;
     private ?int $episodes;
     private ?int $grades;
-    private ?string $image;
     private ?string $director;
     private ?DateTime $startDate;
     private ?int $status;
     private ?bool $isAdult;
-    private ?Collection $themes;
-    private ?Collection $reviews;
-    private ?Collection $actors;
+    private Collection $themes;
+    private Collection $reviews;
+    private Collection $actors;
 
     # Functions
     public function __construct()
     {
+        $this->images = new ArrayCollection();
+        $this->videos = new ArrayCollection();
         $this->themes = new ArrayCollection();
-        $this->actors = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->actors = new ArrayCollection();
     }
 
     # Getters and setters
@@ -88,6 +89,26 @@ class TV
         return $this;
     }
 
+    public function addImage(Image $image): static
+    {
+        if (!$this->images->contains($image)){
+            $this->images->add($image);
+            $image->setTv($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            if ($image->getTv() === $this) {
+                $image->setTv(null);
+            }
+        }
+        return $this;
+    }
+
     /**
      * Get the value of videos
      */
@@ -103,6 +124,25 @@ class TV
     {
         $this->videos = $videos;
 
+        return $this;
+    }
+
+    public function addVideo(Video $video): static
+    {
+        if (!$this->videos->contains($video)){
+            $this->videos->add($video);
+            $video->setTv($this);
+        }
+        return $this;
+    }
+
+    public function removeVideo(Video $video): static
+    {
+        if ($this->videos->removeElement($video)) {
+            if ($video->getTv() === $this) {
+                $video->setTv(null);
+            }
+        }
         return $this;
     }
 
@@ -192,24 +232,6 @@ class TV
     public function setGrades(?int $grades): self
     {
         $this->grades = $grades;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of image
-     */
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    /**
-     * Set the value of image
-     */
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
 
         return $this;
     }
@@ -310,7 +332,6 @@ class TV
             $this->themes->add($theme);
             $theme->addTv($this);
         }
-
         return $this;
     }
 
@@ -339,6 +360,25 @@ class TV
     {
         $this->reviews = $reviews;
 
+        return $this;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)){
+            $this->reviews->add($review);
+            $review->setTv($this);
+        }
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            if ($review->getTv()===$this) {
+                $review->setTv(null);
+            }
+        }
         return $this;
     }
 
