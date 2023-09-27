@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <main class="containter">
+        <ol>
+            <div class="row-12 d-md-flex">
+                <div class="col-3">
+                    <img src={{movie.images.0.path}} height=250 width=auto></img>
+                </div>
+                <div class="col-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><li>{{movie.title}}</li></h5>
+                        <p class="card-text">Release date: {{movie.releaseDate | date('Y-m-d')}}</p>
+                        <p class="card-text">Average review score: {{movie.grade}}</p>
+                    </div>
+                </div>
+            </div>
+        </ol>
+    </main>
+{% endblock %}

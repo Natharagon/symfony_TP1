@@ -51,4 +51,32 @@ class MovieController extends AbstractController
 
         
     }
+
+    #[Route('/{id}')]
+    public function getMovie(int $id): Response
+    {
+        $response = $this->tmdbClient->request(
+            'GET',
+            '/3/movie/' . $id
+        );
+
+        $apiMovie = json_decode($response->getContent());
+        //dd($apiMovie);
+
+        $movie = new Movie();
+        $movie->setTitle($apiMovie->title);
+        $movie->setLanguage($apiMovie->original_language);
+        $image = new Image();
+        $image->setPath('https://image.tmdb.org/t/p/original' . $apiMovie->poster_path);
+        $movie->addImage($image);
+        $movie->setReleaseDate(new \DateTime($apiMovie->release_date));
+        $movie->setSynopsis(($apiMovie->overview));
+        $movie->setIsAdult($apiMovie->adult);
+        $movie->setGrade($apiMovie->vote_average);
+        
+        return $this->render('movie/movieById.html.twig', [
+            'movie' => $movie,
+        ]);
+        
+    }
 }
