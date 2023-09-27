@@ -122,6 +122,26 @@ class Actor
         return $this;
     }
 
+    public function addMovie(Movie $movie): static
+    {
+        if (!$this->movies->contains($movie)){
+            $this->movies->add($movie);
+            $movie->addActor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMovie(Movie $movie): static
+    {
+        if ($this->movies->removeElement($movie)) {
+            if ($movie->getActors()->contains($this)) {
+                $movie->removeActor($this);
+            }
+        }
+        return $this;
+    }
+
     /**
      * Get the value of tv
      */
@@ -137,6 +157,25 @@ class Actor
     {
         $this->tv = $tv;
 
+        return $this;
+    }
+    public function addTv(TV $tv): static
+    {
+        if (!$this->tv->contains($tv)){
+            $this->tv->add($tv);
+            $tv->addActor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTv(TV $tv): static
+    {
+        if ($this->tv->removeElement($tv)) {
+            if ($tv->getActors()->contains($this)) {
+                $tv->removeActor($this);
+            }
+        }
         return $this;
     }
 }

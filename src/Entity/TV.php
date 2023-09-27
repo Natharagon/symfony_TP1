@@ -359,4 +359,24 @@ class TV
 
         return $this;
     }
+
+    public function addActor(Actor $actor): static
+    {
+        if (!$this->actors->contains($actor)){
+            $this->actors->add($actor);
+            $actor->addTv($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActor(Actor $actor): static
+    {
+        if ($this->actors->removeElement($actor)) {
+            if ($actor->getTv()->contains($this)) {
+                $actor->removeTv($this);
+            }
+        }
+        return $this;
+    }
 }
