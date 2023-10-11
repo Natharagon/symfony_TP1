@@ -5,7 +5,13 @@
         <ol>
             <div class="row-12 d-md-flex">
                 <div class="col-3">
-                    <img src={{movie.images.0.path}} height=250 width=auto></img>
+                    <img src={{movie.images.0.path}} height=250 width=auto>
+                    {{ form_start(form) }}
+                    {{ form_widget(form.movieId, {'attr': {'value': movie.id}}) }}
+                    {{ form_widget(form.tvId) }}
+
+                    {{ form_row(form.submit, {'label': 'Add to favourites'}) }}
+                    {{ form_end(form) }}
                 </div>
                 <div class="col-3">
                     <div class="card-body">
@@ -35,7 +41,7 @@
                         <h4>Reviews</h4>
                         <p class="card-text">
                         {% for review in movie.reviews %}
-                            <h3>{{review.grade}}/10</h3>
+                            <h3>{{review.grade}}</h3>
                             <h4>{{review.username}}</h4>
                             <p>{{review.comment}}</p>
                         {% endfor %}

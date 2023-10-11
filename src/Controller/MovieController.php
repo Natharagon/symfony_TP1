@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Actor;
+use App\Entity\Favourite;
 use App\Entity\Movie;
 use App\Entity\Review;
 use App\Entity\Theme;
+use App\Form\FavouriteType;
+use App\Repository\FavouriteRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,6 +21,7 @@ class MovieController extends AbstractController
 {
     public function __construct(
         private readonly HttpClientInterface $tmdbClient,
+        private FavouriteRepository $favouriteRepository
     ) {}
 
     #[Route('/all')]
@@ -55,7 +60,7 @@ class MovieController extends AbstractController
     }
 
     #[Route('/{id}')]
-    public function getMovie(int $id): Response
+    public function getMovie(int $id, Request $request): Response
     {
         $response = $this->tmdbClient->request(
             'GET',
@@ -104,9 +109,21 @@ class MovieController extends AbstractController
             $review->setUsername($apiReview->author_details->username);
             $movie->addReview($review);
         }
-        
+
+        $favourite = new Favourite();
+        $form = $this->createForm(FavouriteType::class, $favourite);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $favourite = $form->getData();
+
+
+            // ... perform some action, such as saving the task to the database
+        }
+
         return $this->render('movie/movieById.html.twig', [
             'movie' => $movie,
+            'form' => $form,
         ]);
         
     }
