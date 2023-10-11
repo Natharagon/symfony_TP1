@@ -8,7 +8,7 @@
                     <div class="row-12 d-md-flex">
                 {% endif %}
                         <div class="col-3">
-                            <img src={{movie.images.0.path}} height=250 width=auto></img>
+                            <a href={{"http://127.0.0.1:8000/movie/" ~ movie.id}}><img src={{movie.images.0.path}} height=250 width=auto></img></a>
                         </div>
                         <div class="col-3">
                             <div class="card-body">

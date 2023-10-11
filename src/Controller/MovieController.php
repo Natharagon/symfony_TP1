@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Movie;
 use App\Entity\Review;
+use App\Entity\Theme;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,6 +31,7 @@ class MovieController extends AbstractController
         for ($i=0; $i<10; $i++){
             $apiMovie = $apiMovies[$i];
             $movie = new Movie();
+            $movie->setId($apiMovie['id']);
             $movie->setTitle($apiMovie['title']);
             $movie->setLanguage($apiMovie['original_language']);
             $image = new Image();
@@ -49,7 +51,6 @@ class MovieController extends AbstractController
             'movies' => $movies,
         ]);
 
-        
     }
 
     #[Route('/{id}')]
@@ -61,10 +62,15 @@ class MovieController extends AbstractController
         );
 
         $apiMovie = json_decode($response->getContent());
-        //dd($apiMovie);
 
         $movie = new Movie();
+        $movie->setId($apiMovie->id);
         $movie->setTitle($apiMovie->title);
+        foreach($apiMovie->genres as $genre) {
+            $theme = new Theme();
+            $theme->setName($genre->name);
+            $movie->addTheme($theme);
+        }
         $movie->setLanguage($apiMovie->original_language);
         $image = new Image();
         $image->setPath('https://image.tmdb.org/t/p/original' . $apiMovie->poster_path);

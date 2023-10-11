@@ -10,8 +10,14 @@
                 <div class="col-3">
                     <div class="card-body">
                         <h5 class="card-title"><li>{{movie.title}}</li></h5>
+                        <p class="card-text">
+                        {% for theme in movie.themes %}
+                            {{theme.name}}
+                        {% endfor %}
+                        </p>
                         <p class="card-text">Release date: {{movie.releaseDate | date('Y-m-d')}}</p>
                         <p class="card-text">Average review score: {{movie.grade}}</p>
+                        <p class="card-text">{{movie.synopsis}}</p>
                     </div>
                 </div>
             </div>
