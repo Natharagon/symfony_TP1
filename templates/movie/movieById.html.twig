@@ -7,10 +7,18 @@
                 <div class="col-3">
                     <img src={{movie.images.0.path}} height=250 width=auto>
                     {{ form_start(form) }}
-                    {{ form_widget(form.movieId, {'attr': {'value': movie.id}}) }}
+                    {% if (not favouriteExists) %}
+                        {{ form_widget(form.movieId) }}
+                    {% else %}
+                        {{ form_widget(form.movieId, {'attr': {'value': movie.id}}) }}
+                    {% endif %}
                     {{ form_widget(form.tvId) }}
 
-                    {{ form_row(form.submit, {'label': 'Add to favourites'}) }}
+                    {% if (not favouriteExists) %}
+                        {{ form_row(form.submit, {'label': 'Remove from favourites'}) }}
+                    {% else %}
+                        {{ form_row(form.submit, {'label': 'Add to favourites'}) }}
+                    {% endif %}
                     {{ form_end(form) }}
                 </div>
                 <div class="col-3">

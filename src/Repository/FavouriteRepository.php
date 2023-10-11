@@ -31,6 +31,15 @@ class FavouriteRepository extends ServiceEntityRepository
 
     }
 
+    public function delete(Favourite $favourite, bool $flush = false):void
+    {
+        $this->getEntityManager()->remove($favourite);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 //    /**
 //     * @return Favourite[] Returns an array of Favourite objects
 //     */

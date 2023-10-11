@@ -111,18 +111,33 @@ class MovieController extends AbstractController
             $movie->addReview($review);
         }
 
-        $favourite = new Favourite();
+        $favouriteRepository = $entityManager->getRepository(Favourite::class);
+        $favourite = $favouriteRepository->findOneBy(['movieId' => $movie->getId()]);
+        if ($favourite==null) {
+            $favourite = new Favourite();
+            $favouriteExists = false;
+        }
+        else {
+            $favouriteExists = true;
+        }
+
         $form = $this->createForm(FavouriteType::class, $favourite);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $favourite = $form->getData();
-            $entityManager->getRepository(Favourite::class)->save($favourite, true);
+            if ($favouriteExists) {
+                $favouriteRepository->delete($favourite, true);
+            }
+            else {
+                $favourite = $form->getData();
+                $favouriteRepository->save($favourite, true);
+            }
         }
 
         return $this->render('movie/movieById.html.twig', [
             'movie' => $movie,
             'form' => $form,
+            'favouriteExists' => $favouriteExists,
         ]);
         
     }
