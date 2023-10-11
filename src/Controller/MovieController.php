@@ -22,7 +22,6 @@ class MovieController extends AbstractController
 {
     public function __construct(
         private readonly HttpClientInterface $tmdbClient,
-        private FavouriteRepository $favouriteRepository,
     ) {}
 
     #[Route('/all')]
