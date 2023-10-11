@@ -26,7 +26,6 @@ class TVController extends AbstractController
             'GET',
             '/3/tv/popular'
         );
-
         $apiTvs = $response->toArray()['results'];
         $tvs = [];
         for ($i=0; $i<10; $i++){
@@ -40,7 +39,6 @@ class TVController extends AbstractController
             $tv->addImage($image);
             $tv->setStartDate(new \DateTime($apiTv['first_air_date']));
             $tv->setOverview(($apiTv['overview']));
-            $tv->setIsAdult($apiTv['adult']);
             $tv->setGrade($apiTv['vote_average']);
             $tvs[] = $tv;
         }

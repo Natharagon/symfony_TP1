@@ -16,11 +16,10 @@ class TV
     private ?string $overview;
     private ?int $seasons;
     private ?int $episodes;
-    private ?int $grades;
+    private ?float $grade;
     private ?string $director;
     private ?DateTime $startDate;
     private ?int $status;
-    private ?bool $isAdult;
     private Collection $themes;
     private Collection $reviews;
     private Collection $actors;
@@ -238,19 +237,19 @@ class TV
     }
 
     /**
-     * Get the value of grades
+     * Get the value of grade
      */
-    public function getGrades(): ?int
+    public function getGrade(): ?float
     {
-        return $this->grades;
+        return $this->grade;
     }
 
     /**
-     * Set the value of grades
+     * Set the value of grade
      */
-    public function setGrades(?int $grades): self
+    public function setGrade(?float $grade): self
     {
-        $this->grades = $grades;
+        $this->grade = $grade;
 
         return $this;
     }
@@ -305,24 +304,6 @@ class TV
     public function setStatus(?int $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of isAdult
-     */
-    public function isIsAdult(): ?bool
-    {
-        return $this->isAdult;
-    }
-
-    /**
-     * Set the value of isAdult
-     */
-    public function setIsAdult(?bool $isAdult): self
-    {
-        $this->isAdult = $isAdult;
 
         return $this;
     }
