@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <main class="containter">
+    <main class="container">
         <ol>
             <div class="row-12 d-md-flex">
                 <div class="col-3">
@@ -20,14 +20,18 @@
                         <p class="card-text">{{movie.synopsis}}</p>
                         </p>
                     </div>
-                    <div>
+                </div>
+                <div class="col-3">
+                    <div class="card-body">
                         <h4>Casting</h4>
                         <p class="card-text">
                         {% for actor in movie.actors %}
                             {{actor.name}} {% if not loop.last %} — {% endif %}
                         {% endfor %}
                     </div>
-                    <div>
+                </div>
+                <div class="col-3">
+                    <div class="card-body">
                         <h4>Reviews</h4>
                         <p class="card-text">
                         {% for review in movie.reviews %}

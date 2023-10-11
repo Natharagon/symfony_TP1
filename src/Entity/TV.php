@@ -13,6 +13,7 @@ class TV
     private Collection $videos;
     private ?string $language;
     private ?string $country;
+    private ?string $overview;
     private ?int $seasons;
     private ?int $episodes;
     private ?int $grades;
@@ -178,6 +179,24 @@ class TV
     public function setCountry(?string $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of overview
+     */
+    public function getOverview(): ?string
+    {
+        return $this->overview;
+    }
+
+    /**
+     * Set the value of overview
+     */
+    public function setOverview(?string $overview): self
+    {
+        $this->overview = $overview;
 
         return $this;
     }
