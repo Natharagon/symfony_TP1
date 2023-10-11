@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Actor;
 use App\Entity\Movie;
 use App\Entity\Review;
 use App\Entity\Theme;
@@ -79,6 +80,18 @@ class MovieController extends AbstractController
         $movie->setSynopsis(($apiMovie->overview));
         $movie->setIsAdult($apiMovie->adult);
         $movie->setGrade($apiMovie->vote_average);
+
+        $casting = $this->tmdbClient->request(
+            'GET',
+            '/3/movie/' . $apiMovie->id . '/credits'
+        );
+        $apiCasting = json_decode($casting->getContent());
+
+        foreach($apiCasting->cast as $apiActor) {
+            $actor = new Actor();
+            $actor->setName($apiActor->name);
+            $movie->addActor($actor);
+        }
         
         return $this->render('movie/movieById.html.twig', [
             'movie' => $movie,

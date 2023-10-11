@@ -7,8 +7,7 @@ use Doctrine\Common\Collections\Collection;
 class Actor
 {
     private int $id;
-    private ?string $lastName;
-    private ?string $firstName;
+    private ?string $name;
     private ?int $gender;
     private ?string $biography;
     private ?Collection $movies;
@@ -42,35 +41,17 @@ class Actor
     /**
      * Get the value of lastName
      */
-    public function getLastName(): ?string
+    public function getName(): ?string
     {
-        return $this->lastName;
+        return $this->name;
     }
 
     /**
      * Set the value of lastName
      */
-    public function setLastName(?string $lastName): self
+    public function setName(?string $name): self
     {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of firstName
-     */
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * Set the value of firstName
-     */
-    public function setFirstName(?string $firstName): self
-    {
-        $this->firstName = $firstName;
+        $this->name = $name;
 
         return $this;
     }

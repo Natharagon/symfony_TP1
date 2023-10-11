@@ -18,6 +18,14 @@
                         <p class="card-text">Release date: {{movie.releaseDate | date('Y-m-d')}}</p>
                         <p class="card-text">Average review score: {{movie.grade}}</p>
                         <p class="card-text">{{movie.synopsis}}</p>
+                        </p>
+                    </div>
+                    <div>
+                        <h4>Casting</h4>
+                        <p class="card-text">
+                        {% for actor in movie.actors %}
+                            {{actor.name}} {% if not loop.last %} — {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>
