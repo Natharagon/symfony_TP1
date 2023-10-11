@@ -21,6 +21,16 @@ class FavouriteRepository extends ServiceEntityRepository
         parent::__construct($registry, Favourite::class);
     }
 
+    public function save(Favourite $favourite, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($favourite);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+
+    }
+
 //    /**
 //     * @return Favourite[] Returns an array of Favourite objects
 //     */
