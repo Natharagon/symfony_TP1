@@ -27,6 +27,14 @@
                             {{actor.name}} {% if not loop.last %} — {% endif %}
                         {% endfor %}
                     </div>
+                    <div>
+                        <h4>Reviews</h4>
+                        <p class="card-text">
+                        {% for review in movie.reviews %}
+                            <h3>{{review.grade}}</h3>
+                            <p>{{review.comment}}</p>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </ol>

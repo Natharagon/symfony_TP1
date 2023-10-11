@@ -86,11 +86,22 @@ class MovieController extends AbstractController
             '/3/movie/' . $apiMovie->id . '/credits'
         );
         $apiCasting = json_decode($casting->getContent());
-
         foreach($apiCasting->cast as $apiActor) {
             $actor = new Actor();
             $actor->setName($apiActor->name);
             $movie->addActor($actor);
+        }
+
+        $reviews = $this->tmdbClient->request(
+            'GET',
+            '/3/movie/' . $apiMovie->id . '/reviews'
+        );
+        $reviews = json_decode($reviews->getContent());
+        foreach($reviews->results as $apiReview) {
+            $review = new Review();
+            $review->setComment($apiReview->content);
+            $review->setGrade($apiReview->author_details->rating);
+            $movie->addReview($review);
         }
         
         return $this->render('movie/movieById.html.twig', [
