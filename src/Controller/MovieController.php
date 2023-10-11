@@ -101,6 +101,7 @@ class MovieController extends AbstractController
             $review = new Review();
             $review->setComment($apiReview->content);
             $review->setGrade($apiReview->author_details->rating);
+            $review->setUsername($apiReview->author_details->username);
             $movie->addReview($review);
         }
         
