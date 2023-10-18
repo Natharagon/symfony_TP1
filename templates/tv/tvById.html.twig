@@ -5,14 +5,14 @@
         <ol>
             <div class="row-12 d-md-flex">
                 <div class="col-3">
-                    <img src={{movie.images.0.path}} height=250 width=auto>
+                    <img src={{tv.images.0.path}} height=250 width=auto>
                     {{ form_start(form) }}
                     {% if (favouriteExists) %}
-                        {{ form_widget(form.movieId) }}
+                        {{ form_widget(form.tvId) }}
                     {% else %}
-                        {{ form_widget(form.movieId, {'attr': {'value': movie.id}}) }}
+                        {{ form_widget(form.tvId, {'attr': {'value': tv.id}}) }}
                     {% endif %}
-                    {{ form_widget(form.tvId) }}
+                    {{ form_widget(form.movieId) }}
 
                     {% if (favouriteExists) %}
                         {{ form_row(form.submit, {'label': 'Remove from favourites'}) }}
@@ -23,15 +23,15 @@
                 </div>
                 <div class="col-3">
                     <div class="card-body">
-                        <h5 class="card-title"><li>{{movie.title}}</li></h5>
+                        <h5 class="card-title"><li>{{tv.name}}</li></h5>
                         <p class="card-text">
-                        {% for theme in movie.themes %}
-                            {{theme.name}}
-                        {% endfor %}
+                            {% for theme in tv.themes %}
+                                {{theme.name}}
+                            {% endfor %}
                         </p>
-                        <p class="card-text">Release date: {{movie.releaseDate | date('Y-m-d')}}</p>
-                        <p class="card-text">Average review score: {{movie.grade}}</p>
-                        <p class="card-text">{{movie.synopsis}}</p>
+                        <p class="card-text">Release date: {{tv.startDate | date('Y-m-d')}}</p>
+                        <p class="card-text">Average review score: {{tv.grade}}</p>
+                        <p class="card-text">{{tv.overview}}</p>
                         </p>
                     </div>
                 </div>
@@ -39,19 +39,19 @@
                     <div class="card-body">
                         <h4>Casting</h4>
                         <p class="card-text">
-                        {% for actor in movie.actors %}
-                            {{actor.name}} {% if not loop.last %} — {% endif %}
-                        {% endfor %}
+                            {% for actor in tv.actors %}
+                                {{actor.name}} {% if not loop.last %} — {% endif %}
+                            {% endfor %}
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="card-body">
                         <h4>Reviews</h4>
                         <p class="card-text">
-                        {% for review in movie.reviews %}
-                            <h3>{{review.grade}}</h3>
-                            <h4>{{review.username}}</h4>
-                            <p>{{review.comment}}</p>
+                            {% for review in tv.reviews %}
+                        <h3>{{review.grade}}</h3>
+                        <h4>{{review.username}}</h4>
+                        <p>{{review.comment}}</p>
                         {% endfor %}
                     </div>
                 </div>

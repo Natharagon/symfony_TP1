@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Actor;
+use App\Entity\Favourite;
 use App\Entity\TV;
 use App\Entity\Review;
 use App\Entity\Theme;
+use App\Form\FavouriteType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -53,7 +57,7 @@ class TVController extends AbstractController
     }
 
     #[Route('/{id}')]
-    public function getTv(int $id): Response
+    public function getTv(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $response = $this->tmdbClient->request(
             'GET',
@@ -76,7 +80,6 @@ class TVController extends AbstractController
         $tv->addImage($image);
         $tv->setStartDate(new \DateTime($apiTv->first_air_date));
         $tv->setOverview(($apiTv->overview));
-        $tv->setIsAdult($apiTv->adult);
         $tv->setGrade($apiTv->vote_average);
 
         $casting = $this->tmdbClient->request(
@@ -102,9 +105,34 @@ class TVController extends AbstractController
             $review->setUsername($apiReview->author_details->username);
             $tv->addReview($review);
         }
+
+        $favouriteRepository = $entityManager->getRepository(Favourite::class);
+        $favourite = $favouriteRepository->findOneBy(['tvId' => $tv->getId()]);
+        if ($favourite==null) {
+            $favourite = new Favourite();
+            $favouriteExists = false;
+        }
+        else {
+            $favouriteExists = true;
+        }
+
+        $form = $this->createForm(FavouriteType::class, $favourite);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($favouriteExists) {
+                $favouriteRepository->delete($favourite, true);
+            }
+            else {
+                $favourite = $form->getData();
+                $favouriteRepository->save($favourite, true);
+            }
+        }
         
         return $this->render('tv/tvById.html.twig', [
             'tv' => $tv,
+            'form' => $form,
+            'favouriteExists' => $favouriteExists
         ]);
         
     }
