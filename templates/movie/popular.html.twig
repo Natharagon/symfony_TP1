@@ -3,9 +3,6 @@
 {% block body %}
 
     <main class="container">
-        {{ form_start(form) }}
-        {{ form_widget({'attr': {'placeholder': 'Search for a movie'}}) }}
-        {{ form_end(form) }}
         <ol>
             {% for movie in movies %}
                 {% if loop.index0 is divisible by 2 %}
