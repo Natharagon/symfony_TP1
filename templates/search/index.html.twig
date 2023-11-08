@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <main class="container">
+        <ol>
+            {% for result in results %}
+                {% if loop.index0 is divisible by 2 %}
+                    <div class="row-12 d-md-flex">
+                {% endif %}
+
+                <div class="col-3">
+                    {% if result.releaseDate is defined %}
+                        <a href={{"http://127.0.0.1:8000/movie/" ~ result.id}}><img src={{result.images.0.path}} height=250 width=auto></img></a>
+                    {% else %}
+                        <a href={{"http://127.0.0.1:8000/tv/" ~ result.id}}><img src={{result.images.0.path}} height=250 width=auto></img></a>
+                    {% endif %}
+                </div>
+                <div class="col-3">
+                    <div class="card-body">
+                        {% if result.releaseDate is defined %}
+                            <h5 class="card-title"><li>{{result.title}}</li></h5>
+                            <p class="card-text">Release date: {{result.releaseDate | date('Y-m-d')}}</p>
+                            <p class="card-text">Average review score: {{result.grade}}</p>
+                        {% else %}
+                            <h5 class="card-title"><li>{{result.name}}</li></h5>
+                            <p class="card-text">Release date: {{result.startDate | date('Y-m-d')}}</p>
+                            <p class="card-text">Average review score: {{result.grade}}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if loop.index0 is not divisible by 2 %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+        </ol>
+    </main>
+{% endblock %}
