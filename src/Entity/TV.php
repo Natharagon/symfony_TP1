@@ -367,7 +367,7 @@ class TV
     {
         if (!$this->reviews->contains($review)){
             $this->reviews->add($review);
-            $review->setTv($this);
+            $review->setTvId($this->id);
         }
         return $this;
     }
@@ -375,8 +375,8 @@ class TV
     public function removeReview(Review $review): static
     {
         if ($this->reviews->removeElement($review)) {
-            if ($review->getTv()===$this) {
-                $review->setTv(null);
+            if ($review->getTvId()===$this->id) {
+                $review->setTvId(null);
             }
         }
         return $this;

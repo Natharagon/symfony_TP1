@@ -1,0 +1,22 @@
+{{ form_start(reviewForm) }}
+    <h3>Add a review</h3>
+    <div style="display: none;">
+        {% if movie is defined %}
+            {{ form_widget(reviewForm.movieId, {'attr': {'value': movie.id}}) }}
+            {{ form_widget(reviewForm.tvId)}}
+        {% else %}
+            {{ form_widget(reviewForm.movieId) }}
+            {{ form_widget(reviewForm.tvId, {'attr' : {'value': tv.id}}) }}
+        {% endif %}
+    </div>
+
+    {{ form_label(reviewForm.username) }}
+    {{ form_widget(reviewForm.username) }}
+    {{ form_label(reviewForm.grade) }}
+    {{ form_widget(reviewForm.grade) }}
+    {{ form_label(reviewForm.comment) }}
+    {{ form_widget(reviewForm.comment) }}
+
+    {{ form_row(reviewForm.submit, {'label': 'Add a review'}) }}
+
+{{ form_end(reviewForm) }}

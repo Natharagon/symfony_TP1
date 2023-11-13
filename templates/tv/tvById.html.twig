@@ -20,6 +20,8 @@
                         {{ form_row(form.submit, {'label': 'Add to favourites'}) }}
                     {% endif %}
                     {{ form_end(form) }}
+
+                    {{ include('reviewForm.html.twig') }}
                 </div>
                 <div class="col-3">
                     <div class="card-body">

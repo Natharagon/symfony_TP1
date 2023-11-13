@@ -8,6 +8,7 @@ use App\Entity\TV;
 use App\Entity\Review;
 use App\Entity\Theme;
 use App\Form\FavouriteType;
+use App\Form\ReviewType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,6 +94,16 @@ class TVController extends AbstractController
             $tv->addActor($actor);
         }
 
+        $reviewRepository = $entityManager->getRepository(Review::class);
+        $databaseReviews = $reviewRepository->findOneByTvId($id);
+        foreach($databaseReviews as $dbReview) {
+            $review = new Review();
+            $review->setComment($dbReview->getComment());
+            $review->setGrade($dbReview->getGrade());
+            $review->setUsername($dbReview->getUsername());
+            $tv->addReview($review);
+        }
+
         $reviews = $this->tmdbClient->request(
             'GET',
             '/3/tv/' . $apiTv->id . '/reviews'
@@ -128,11 +139,21 @@ class TVController extends AbstractController
                 $favouriteRepository->save($favourite, true);
             }
         }
+
+        // Initiate a form for adding a review
+        $reviewForm = $this->createForm(ReviewType::class, new Review());
+
+        $reviewForm->handleRequest($request);
+        if ($reviewForm->isSubmitted() && $reviewForm->isValid()) {
+            $review = $reviewForm->getData();
+            $reviewRepository->save($review, true);
+        }
         
         return $this->render('tv/tvById.html.twig', [
             'tv' => $tv,
             'form' => $form,
-            'favouriteExists' => $favouriteExists
+            'favouriteExists' => $favouriteExists,
+            'reviewForm' => $reviewForm
         ]);
         
     }

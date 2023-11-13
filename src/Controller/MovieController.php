@@ -8,6 +8,7 @@ use App\Entity\Movie;
 use App\Entity\Review;
 use App\Entity\Theme;
 use App\Form\FavouriteType;
+use App\Form\ReviewType;
 use App\Repository\FavouriteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,6 +63,7 @@ class MovieController extends AbstractController
     #[Route('/{id}')]
     public function getMovie(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Get the movie
         $response = $this->tmdbClient->request(
             'GET',
             '/3/movie/' . $id
@@ -69,6 +71,7 @@ class MovieController extends AbstractController
 
         $apiMovie = json_decode($response->getContent());
 
+        // Create a movie object to pass to the template
         $movie = new Movie();
         $movie->setId($apiMovie->id);
         $movie->setTitle($apiMovie->title);
@@ -97,6 +100,16 @@ class MovieController extends AbstractController
             $movie->addActor($actor);
         }
 
+        $reviewRepository = $entityManager->getRepository(Review::class);
+        $databaseReviews = $reviewRepository->findOneByMovieId($id);
+        foreach($databaseReviews as $dbReview) {
+            $review = new Review();
+            $review->setComment($dbReview->getComment());
+            $review->setGrade($dbReview->getGrade());
+            $review->setUsername($dbReview->getUsername());
+            $movie->addReview($review);
+        }
+
         $reviews = $this->tmdbClient->request(
             'GET',
             '/3/movie/' . $apiMovie->id . '/reviews'
@@ -110,6 +123,7 @@ class MovieController extends AbstractController
             $movie->addReview($review);
         }
 
+        // Check if the movie is a Favourite and create a form accordingly
         $favouriteRepository = $entityManager->getRepository(Favourite::class);
         $favourite = $favouriteRepository->findOneBy(['movieId' => $movie->getId()]);
         if ($favourite==null) {
@@ -133,10 +147,21 @@ class MovieController extends AbstractController
             }
         }
 
+        // Initiate a form for adding a review
+        $reviewForm = $this->createForm(ReviewType::class, new Review());
+        $reviewRepository = $entityManager->getRepository(Review::class);
+
+        $reviewForm->handleRequest($request);
+        if ($reviewForm->isSubmitted() && $reviewForm->isValid()) {
+            $review = $reviewForm->getData();
+            $reviewRepository->save($review, true);
+        }
+
         return $this->render('movie/movieById.html.twig', [
             'movie' => $movie,
             'form' => $form,
             'favouriteExists' => $favouriteExists,
+            'reviewForm' => $reviewForm
         ]);
         
     }

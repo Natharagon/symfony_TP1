@@ -1,119 +1,95 @@
 <?php
 
 namespace App\Entity;
+
+use App\Repository\ReviewRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: ReviewRepository::class)]
 class Review
 {
-    private int $id;
-    private ?float $grade;
-    private ?string $comment;
-    private ?string $username;
-    private ?Movie $movie;
-    private ?TV $tv;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * Get the value of id
-     */
-    public function getId(): int
+    #[ORM\Column(length: 255)]
+    private ?string $username = null;
+
+    #[ORM\Column]
+    private ?float $grade = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $comment = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $movieId = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $tvId = null;
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set the value of id
-     */
-    public function setId(int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of grade
-     */
-    public function getGrade(): ?int
-    {
-        return $this->grade;
-    }
-
-    /**
-     * Set the value of grade
-     */
-    public function setGrade(?int $grade): self
-    {
-        $this->grade = $grade;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of comment
-     */
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    /**
-     * Set the value of comment
-     */
-    public function setComment(?string $comment): self
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of username
-     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /**
-     * Set the value of username
-     */
-    public function setUsername(?string $username): self
+    public function setUsername(string $username): static
     {
         $this->username = $username;
 
         return $this;
     }
 
-    /**
-     * Get the value of movie
-     */
-    public function getMovie(): ?Movie
+    public function getGrade(): ?float
     {
-        return $this->movie;
+        return $this->grade;
     }
 
-    /**
-     * Set the value of movie
-     */
-    public function setMovie(?Movie $movie): self
+    public function setGrade(float $grade): static
     {
-        $this->movie = $movie;
+        $this->grade = $grade;
 
         return $this;
     }
 
-    /**
-     * Get the value of tv
-     */
-    public function getTv(): ?TV
+    public function getComment(): ?string
     {
-        return $this->tv;
+        return $this->comment;
     }
 
-    /**
-     * Set the value of tv
-     */
-    public function setTv(?TV $tv): self
+    public function setComment(string $comment): static
     {
-        $this->tv = $tv;
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getMovieId(): ?int
+    {
+        return $this->movieId;
+    }
+
+    public function setMovieId(?int $movieId): static
+    {
+        $this->movieId = $movieId;
+
+        return $this;
+    }
+
+    public function getTvId(): ?int
+    {
+        return $this->tvId;
+    }
+
+    public function setTvId(?int $tvId): static
+    {
+        $this->tvId = $tvId;
 
         return $this;
     }

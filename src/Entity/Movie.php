@@ -293,7 +293,7 @@ class Movie
     {
         if (!$this->reviews->contains($review)){
             $this->reviews->add($review);
-            $review->setMovie($this);
+            $review->setMovieId($this->id);
         }
         return $this;
     }
@@ -301,8 +301,8 @@ class Movie
     public function removeReview(Review $review): static
     {
         if ($this->reviews->removeElement($review)) {
-            if ($review->getMovie()===$this) {
-                $review->setMovie(null);
+            if ($review->getMovieId()===$this->id) {
+                $review->setMovieId(null);
             }
         }
         return $this;

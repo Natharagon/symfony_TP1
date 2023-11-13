@@ -12,10 +12,8 @@ class Favourite
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $movieId = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $tvId = null;
 
