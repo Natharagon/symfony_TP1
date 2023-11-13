@@ -145,16 +145,17 @@ class MovieController extends AbstractController
                 $favourite = $form->getData();
                 $favouriteRepository->save($favourite, true);
             }
+            return $this->redirect($request->getUri());
         }
 
         // Initiate a form for adding a review
         $reviewForm = $this->createForm(ReviewType::class, new Review());
-        $reviewRepository = $entityManager->getRepository(Review::class);
 
         $reviewForm->handleRequest($request);
         if ($reviewForm->isSubmitted() && $reviewForm->isValid()) {
             $review = $reviewForm->getData();
             $reviewRepository->save($review, true);
+            return $this->redirect($request->getUri());
         }
 
         return $this->render('movie/movieById.html.twig', [

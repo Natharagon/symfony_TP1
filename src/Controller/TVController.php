@@ -138,6 +138,7 @@ class TVController extends AbstractController
                 $favourite = $form->getData();
                 $favouriteRepository->save($favourite, true);
             }
+            return $this->redirect($request->getUri());
         }
 
         // Initiate a form for adding a review
@@ -147,6 +148,7 @@ class TVController extends AbstractController
         if ($reviewForm->isSubmitted() && $reviewForm->isValid()) {
             $review = $reviewForm->getData();
             $reviewRepository->save($review, true);
+            return $this->redirect($request->getUri());
         }
         
         return $this->render('tv/tvById.html.twig', [
